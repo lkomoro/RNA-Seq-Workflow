@@ -44,8 +44,6 @@ scythe -M 30 \
 done
 
 ```
-Let's take a closer look at what each part of this script is doing.
-
 The next step in the workflow is to perform adaptive trimming with [sickle][2].
 
 For more information about scythe, see the README file on its [GitHub page][1].
