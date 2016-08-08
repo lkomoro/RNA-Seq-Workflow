@@ -1,0 +1,28 @@
+##FastQC
+
+The program FastQC runs several tests that will assess the quality of the inputted raw high throughput sequence data. FastQC can be downloaded [here][1].
+
+FastQC can be run in an interactive application format in which you can dynamically load .fastq files and view their results by running the run_fastqc batch file found in the downloaded zip folder. However, this can be time consuming as you can only upload and run FastQC on a single file at a time. For the purposes of this workflow and the possible use of FastQC in other analysis pipelines, it will be better to run the program from command line so that several files can be analyzed at once and results can then be interpreted in a timely manner.
+
+To generate reports for batches of files, run the following command:
+
+```nohup fastqc -f fastq -t 32 *.fastq > fastqc.stdout 2> fastqc.stderr &```
+
+###Evaluating the FastQC reports1
+
+For each file analyzed, FastQC will output an HTML formatted report of the results as well as a zipped folder containing reports for each test run by FastQC.Pay close attention to the results for the restults for the following:
+
+- Per base sequence quality shows an overview of the range of quality values across all bases at each position. Poor results are usually due to degradation of quality over the duration of long runs.
+- Per tile sequence quality shows the deviation from the average quality for each tile if using an Illumina library. Poor results could be due to bubbles or smudges on the flowcell among other things.
+- Per base N content plots the percentage of base calls at each position for which an N was called. Poor results are again usually due to quality degradation.
+- Sequence duplication levels plots the relative number of sequences with different degrees of duplication. Poor results can indicate some kind of enrichment bias such as PCR over-amplification.
+- Overrepresented sequences can indicate if there is significant adapter contamination. Perform a BLAST search on the overrepresented sequence if it looks unusual to investigate (e.g., bacterial contamination, failed ribosomal depletion).
+
+FastQC will give the data a pass, warning, or fail for the results of each test. It is important to remember that poor FastQC results are not necessarily indicative that all of the data is bad, but rather that there may be an underlying biological explanation for these results that may even cause one to expect poor FastQC results. Follow these links to see [good][2] and [bad][3] FastQC results.
+
+The next step in the workflow is to perform adapter trimming with [scythe][4].
+
+[1]:http://www.bioinformatics.babraham.ac.uk/projects/fastqc/
+[2]:http://www.bioinformatics.babraham.ac.uk/projects/fastqc/good_sequence_short_fastqc.html
+[3]:http://www.bioinformatics.babraham.ac.uk/projects/fastqc/bad_sequence_fastqc.html
+[4]:https://github.com/sarinafernandez/RNA-Seq/blob/master/scythe.Rmd
