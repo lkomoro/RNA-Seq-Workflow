@@ -1,4 +1,4 @@
-## Adaptive trimming with sickle
+## Low quality timming with sickle
 
 Sickle is a sliding window adaptive trimming tool. It uses sequence quality and length thresholds to trim both the 5’ and 3’ ends of sequence reads. Because read qualitites can deterioriate at both the 5' an 3' ends, adpative trimming is necessary in order to prevent misalignment in the next step. Sickle can be downloaded [here][1].
 
