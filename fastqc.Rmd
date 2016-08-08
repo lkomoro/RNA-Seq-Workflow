@@ -1,6 +1,6 @@
 ##FastQC
 
-The program FastQC runs several functions that will assess the quality of the inputted raw high throughput sequence data. FastQC can be downloaded [here][1].
+FastQC runs several functions that will assess the quality of the inputted raw high throughput sequence data. FastQC can be downloaded [here][1].
 
 FastQC can be run in an interactive application format in which you can dynamically load .fastq files and view their results by running the run_fastqc batch file found in the downloaded zip folder. However, this can be time consuming as you can only upload and run FastQC on a single file at a time. For the purposes of this workflow and the possible use of FastQC in other analysis pipelines, it will be better to run the program from command line so that several files can be analyzed at once and results can then be interpreted in a timely manner.
 

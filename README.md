@@ -3,10 +3,10 @@
 This workflow will guide users through the steps and software tools used for RNA Sequencing analysis. The main steps of this workflow are:
 
 - Initial quality assesments and file concatenation
-- Evaluate data quality with [FastQC][3] 
+- Evaluation of data quality with [FastQC][3] 
 - Adapter trimming with [scythe][1] and low-quality trimming with [sickle][2]
 - Alignment to a reference genome, [transcriptome][4], or de novo assembly
-- Process alignments and create a table of raw counts
+- Processing alignments and creating a table of raw counts
 - Differential expression analysis
 - Annotation
 
