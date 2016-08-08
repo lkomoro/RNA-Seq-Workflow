@@ -1,0 +1,42 @@
+## Adaptive trimming with sickle
+
+Sickle is a sliding window adaptive trimming tool. It uses sequence quality and length thresholds to trim both the 5’ and 3’ ends of sequence reads. Because read qualitites can deterioriate at both the 5' an 3' ends, adpative trimming is necessary in order to prevent misalignment in the next step. Sickle can be downloaded [here][1].
+
+Sickle can run with either paired-end reads or single-end reads. The following cammands are used to indicate if the data has paired-end reads or single-end reads:
+- ```sickle pe``` for paired-end reads
+- ```sickle se``` for single-end reads
+
+For ```sickle pe``` the program must be told how to find the forward (```-f```) and reverse (``-r```) of the pairs.
+
+```
+#!/bin/bash
+#module load sickle/7667f147e6
+
+for file in *R2_at.fastq
+
+do
+
+echo $file
+
+sample=`echo $file | cut -f1 -d "_"`
+
+echo $sample
+
+sickle pe \
+-f "$sample"_R1_at.fastq \
+-r "$sample"_R2_at.fastq \
+-t sanger -l 30 \
+-o ../Directory/"$sample"_R1_001_qt.fastq \
+-p ../Directory/"$sample"_R2_001_qt.fastq \
+-s ../Directory/"$sample"_single_qt.fastq \
+> ../Directory/"$sample"_sickle.stdout \
+2> ../Directory/"$sample"_sickle.stderr
+
+done
+```
+The next step in the workflow is alignment to a reference genome, [transcriptome][2], or de novo assembly. 
+
+For more information about sickle, see the README file on its [GitHub page][1].
+
+[1]:https://github.com/ucdavis-bioinformatics/sickle
+[2]:https://github.com/lkomoro/RNA-Seq-Workflow/blob/master/BWA.Rmd

@@ -25,4 +25,4 @@ The next step in the workflow is to perform adapter trimming with [scythe][4].
 [1]:http://www.bioinformatics.babraham.ac.uk/projects/fastqc/
 [2]:http://www.bioinformatics.babraham.ac.uk/projects/fastqc/good_sequence_short_fastqc.html
 [3]:http://www.bioinformatics.babraham.ac.uk/projects/fastqc/bad_sequence_fastqc.html
-[4]:https://github.com/sarinafernandez/RNA-Seq/blob/master/scythe.Rmd
+[4]:https://github.com/lkomoro/RNA-Seq-Workflow/blob/master/scythe.Rmd
