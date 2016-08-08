@@ -1,4 +1,3 @@
-# RNA-Seq-Workflow
 # RNA Seq Workflow
 
 This workflow will guide users through the steps and software tools used for RNA Sequencing analysis. The main steps of this workflow are:
