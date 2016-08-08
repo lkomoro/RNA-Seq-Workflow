@@ -1,0 +1,54 @@
+#Adapter trimming with scythe
+
+Adapters bind both the 5’ and 3’ ends of genomic DNA fragments in the sequencing library, so because they are not part of the genome any adapter contamination must be removed prior to the alignment steps. If the RNA-seq method used resulted in very short fragments, the 3’ end of the sequence can be read through to the 3’ adapter. This read through can happen at a variable position, which would prevent the sequence from aligning properly because the adapter would not correspond to the bases at the 3’ end of the reference sequence. The program scythe will trim the adapters off of the 3’ end. Scythe can be downloaded [here][1].
+
+There are several options with the program scythe that will have to be defined. They are:
+- q tells scythe it's quality encoding; the default is Sanger
+- n is a minimum match length argument;  the default is 5
+- M is a filter that tells the program to keep sequences less than or equal to this length; the default is 35
+- o it the outputted trimmed sequences file; the default is stdout; your input file comes after this
+- a is the path for your adapter file
+
+The following shell script will adapter trim your .fastq files with scythe:
+
+```
+#!/bin/bash
+#module load scythe/c128b19
+
+for file in *.fastq
+
+do
+
+echo $file
+
+sample=`echo $file | cut -f1 -d "_"`
+
+echo $sample
+
+scythe -M 30 \
+-a /home/path_to_your_adapter/my.adapter.fasta \
+-q sanger -n 0 \
+-o "$sample"_R1_at.fastq \
+"$sample"_R1.fastq \
+> "$sample"_R1_scythe.stdout \
+2> "$sample"_R1_scythe.stats.txt &
+
+scythe -M 30 \
+-a /home/path_to_your_adapter/my.adapter.fasta \
+-q sanger -n 0 \
+-o "$sample"_R2_at.fastq \
+"$sample"_R2.fastq \
+> "$sample"_R2_scythe.stdout \
+2> "$sample"_R2_scythe.stats.txt
+
+done
+
+```
+Let's take a closer look at what each part of this script is doing.
+
+The next step in the workflow is to perform adaptive trimming with [sickle][2].
+
+For more information about scythe, see the README file on its [GitHub page][1].
+
+[1]:https://github.com/ucdavis-bioinformatics/scythe
+[2]:https://github.com/lkomoro/RNA-Seq-Workflow/blob/master/sickle.Rmd
