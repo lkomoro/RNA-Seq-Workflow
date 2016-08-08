@@ -10,8 +10,7 @@ This workflow will guide users through the steps and software tools used for RNA
 - Differential expression analysis
 - Annotation
 
-Follow the links above for instructions and code for each step.
-
+Follow the links above for instructions and code for each step of the workflow.
 
 [1]: https://github.com/lkomoro/RNA-Seq-Workflow/blob/master/scythe.Rmd
 [2]: https://github.com/lkomoro/RNA-Seq-Workflow/blob/master/sickle.Rmd
