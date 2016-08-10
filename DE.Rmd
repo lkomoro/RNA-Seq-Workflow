@@ -145,9 +145,14 @@ tmp <- topTags(lrt, n = Inf)
 tmp2 <- tmp$table[,c(1,2,4,5)]
 tmp2 <- cbind(rownames(tmp), tmp2)
 names(tmp2)[1] <- "Gene"
-#if want to write to file on it's own:
+```
+If want to write to file on it's own:
+```{r EdgeR write}
 write.table(tmp2, file = "DS.T2.HC.0_contrast.txt", sep = "\t", quote = F, row.names = F)
-#for if want to prep to combine into one table at end:
+```
+
+If want to prep to combine into one table at end:
+```{r EdgeR write}
 #str(tmp2)
 library(plyr)
 T2.HC.0<-rename(tmp2, c("logFC"="T2.HC.0_logFC", 
@@ -232,8 +237,10 @@ names(tmp2)[1] <- "Gene"
 write.table(tmp2, file = "DS.T4.60.0_contrast.txt", sep = "\t", quote = F, row.names = F)
 T4.60.0<-rename(tmp2, c("logFC"="T4.60.0_logFC", 
                         "logCPM"="T4.60.0_logCPM","PValue"="T4.60.0_PValue","FDR"="T4.60.0_FDR"))
+```
+Merge into one table:
+```{r EdgeR merge}
 
-#merge into one table:
 merge<-merge(T2.60.0,T2.HC.0,by="Gene")
 merge<-merge(merge,T2.HC.60,by="Gene")
 merge<-merge(merge,T3.60.0,by="Gene")
@@ -244,8 +251,9 @@ merge<-merge(merge,T4.HC.0,by="Gene")
 merge<-merge(merge,T4.HC.60,by="Gene")
 View(merge)
 write.table(merge, file = "compiled_contrasts.txt", sep = "\t", quote = F, row.names = F)
-
-#pulling in annotation:
+```
+Pull in annotation:
+```{r EdgeR annotation}
 annot.DS<-read.csv('./delta_smelt_annotation_files/delta_by_gene_nr_annot_GO.csv', header = FALSE)
 annot.DS<-annot.DS[,1:2]#removing GO info for now
 annot.DS.unique<-(unique(annot.DS[,1:2]))#removing redudancies
@@ -255,6 +263,5 @@ annot.DS.unique1<-rename(annot.DS.unique, c("V1"="Gene",
 annot_compiled_contrasts<-merge(merge,annot.DS.unique1,by="Gene",all.x=TRUE)#merging with annotation but keeping data even for those without annotation
 annot_compiled_contrasts<-annot_compiled_contrasts[,c(1,38,2:37)]#just rearranging columns
 write.table(annot_compiled_contrasts, file = "annot_compiled_contrasts.txt", sep = "\t", quote = F, row.names = F)
-
 ```
 [1]:https://support.bioconductor.org/p/62173/
