@@ -125,10 +125,7 @@ my.contrasts <- makeContrasts(T2.HC.0 = T2.0-HC.0,levels=design)
 lrt <- glmLRT(fit, contrast=my.contrasts[,"T2.HC.0"])
 topTags(lrt)
 ```
-
-To just to make it obvious for now, just using the names, but will 
-#switch to other method later to perhaps
-#make easier in the future if manipulating many, amending script to new data, etc.
+To just to make it obvious for now, I'm just using the treatment names, but I plan to switch to other method later to make easier in the future if manipulating many treatment levels, amending script to new data, etc.
 ```{r EdgeR contrast}
 my.contrasts <- makeContrasts(
 T2.HC.0 = T2.0-HC.0,
