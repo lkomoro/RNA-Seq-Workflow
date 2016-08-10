@@ -16,7 +16,7 @@ Additional information can be found in the EdgeR User Guide or [BioConductor Web
 edgeRUsersGuide()
 ```
 
-Load libraries
+####Load libraries
 ```{r EdgeR intro}
 rm(list=ls())
 setwd("~/Desktop/DDIG_count_tables and related files")
@@ -27,8 +27,8 @@ library(edgeR)
 library(erer)
 ```
 
-Read in Files and Filter
-```{r EdgeR laod}
+####Read in Files and Filter
+```{r EdgeR load}
 # Read in file with counts and sample information
 counts <- read.delim("Deltasmelt_RNASeq_rolledupto_genes.txt", row.names = 1)
 
@@ -36,20 +36,20 @@ counts <- read.delim("Deltasmelt_RNASeq_rolledupto_genes.txt", row.names = 1)
 filt <- which(apply(counts, 1, function(x)length(x[which(x > 0)])) <= 1)
 counts2 <- counts[-filt,]
 
-#splittail_metadata <- read.table("pdata.txt", header = T, stringsAsFactors = F)#this is as an example file-see the pdata .txt file
-#splittail_metadata$Hour <- factor(splittail_metadata$Hour)
-
+#Read in metadata for samples
 DS_metadata<-read.table("Ds.metadata.txt", header = T, stringsAsFactors = F)
 DS_metadata$Time_point<-factor(DS_metadata$Time_point)
+```
 
-# Calculate normalization factors
-
+####Calculate normalization factors
+```{r EdgeR norm}
 ed <- DGEList(counts2)
 ed <- calcNormFactors(ed)
 ed$samples #just prints list of the calculated library sizes and normalization factors for each of the samples; library size is based on the sum of the counts unless you specify otherwise
+```
 
-
-# Make MDS plot
+####Make MDS plot-this visualizes samples so you can check for any oddities/outliers, etc.
+```{r EdgeR MDS}
 tiff("DS_MDS.tiff", height = 600, width = 500)
 par(oma = c(5,0,0,0)) # expand outer margins to make room for legend
 plotgroup <- interaction(DS_metadata$Temp_treat, DS_metadata$Time_point)
@@ -64,24 +64,17 @@ legend(x = leg.x, y = leg.y, legend = ltext, text.col = 1:6,
 		title = "Temp/Time", cex = .9)
 par(xpd = F, oma = c(0,0,0,0)) # put everything back to normal
 dev.off()
-#may want to remove DS.T3.t60.5 as outlier if biologically warranted-come back to
+#note for outliers-e.g., for my DS set, may want to look at notes for DS.T3.t60.5 to see if indications of why it's as outlier
+```
 
-######################################################
-# Fitting GLMs- from manual:
-# The CR method is based on the idea of approximate conditional likelihood which reduces
-# to residual maximum likelihood. Given a table counts or a DGEList object and the design
-# matrix of the experiment, generalized linear models are fitted. This allows valid estimation
-# of the dispersion, since all systematic sources of variation are accounted for.
+####Fitting GLMs
+**from EdgeR manual:**
+The CR method is based on the idea of approximate conditional likelihood which reduces to residual maximum likelihood. Given a table counts or a DGEList object and the design matrix of the experiment, generalized linear models are fitted. This allows valid estimation of the dispersion, since all systematic sources of variation are accounted for.
 
-# The CR method can be used to calculate a common dispersion for all the tags, trended
-# dispersion depending on the tag abundance, or separate dispersions for individual tags.
-# These can be done by calling the function estimateDisp() with a specified design. Alternatively, 
-#one can estimate the common, trended and tagwise dispersions separately using
-# estimateGLMCommonDisp(), estimateGLMTrendedDisp() and estimateGLMTagwiseDisp(), 
-#   respectively. The tagwise dispersion approach is strongly recommended in multi-factor 
-#   experiment cases.
+The CR method can be used to calculate a common dispersion for all the tags, trended dispersion depending on the tag abundance, or separate dispersions for individual tags. These can be done by calling the function estimateDisp() with a specified design. Alternatively, one can estimate the common, trended and tagwise dispersions separately using estimateGLMCommonDisp(), estimateGLMTrendedDisp() and estimateGLMTagwiseDisp(), respectively. The tagwise dispersion approach is strongly recommended in multi-factor experiment cases.
 
-#Model with temp and time point
+Model with 2 factors: exposure temperature and time point
+```{r EdgeR GLM}
 #blythe's code:
 #splittail: mm <- model.matrix(~Population*Hour, data = pdata, contrasts = list(Hour = "contr.sum")) #http://www.inside-r.org/r-doc/stats/contrast
 #amended for DS-but not sure how to get the contrasts in the list correct in this way
