@@ -111,7 +111,7 @@ colnames(fit)# just checking columns in same order are: HC.0 HC.60 T2.0 T2.60 T3
 #fits the negative binomial GLM for each tag and produces an object of class DGEGLM with some new components.
 ```
 
-So to then test contrasts, can either specify by column #, or by naming them specifically.  
+So to then test contrasts, can either specify by column #, or by naming them specifically.   
 *e.g., if we want to compare HC.0 vs T2.0, can specify either:*
 ```{r EdgeR contrast}
 lrt <- glmLRT(fit, contrast=c(-1,0,1,0,0,0,0,0))
