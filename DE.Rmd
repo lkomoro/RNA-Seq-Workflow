@@ -1,0 +1,272 @@
+---
+title: "Differential_Expression"
+author: "Lisa Komoroske"
+date: "August 10, 2016"
+output: html_document
+---
+
+##Differential Expression Analysis of RNA-Seq Data
+
+Currently, there are three main packages for DE expression in R (EdgeR, Limma, and DESeq), each have their pros and cons/fans and haters. Like many things in science, I often end up trying things a bunch of different ways to understand what parameters are affecting the outcomes, and in the end, to convince myself that the patterns we are seeing are robust and 'true' to the data. Here I include code I've used for EdgeR and Limma packages for DE Analysis. 
+
+###Option 1. DE with EdgeR
+Additional information can be found in the EdgeR User Guide or [BioConductor Website][1]
+```{r guide}
+edgeRUsersGuide()
+```
+
+Load libraries
+```{r EdgeR intro}
+rm(list=ls())
+setwd("~/Desktop/DDIG_count_tables and related files")
+getwd()
+source("https://bioconductor.org/biocLite.R")
+biocLite("edgeR")
+library(edgeR)
+library(erer)
+```
+
+Read in Files and Filter
+```{r EdgeR laod}
+# Read in file with counts and sample information
+counts <- read.delim("Deltasmelt_RNASeq_rolledupto_genes.txt", row.names = 1)
+
+# Filter out genes that are only present in 0 or 1 samples
+filt <- which(apply(counts, 1, function(x)length(x[which(x > 0)])) <= 1)
+counts2 <- counts[-filt,]
+
+#splittail_metadata <- read.table("pdata.txt", header = T, stringsAsFactors = F)#this is as an example file-see the pdata .txt file
+#splittail_metadata$Hour <- factor(splittail_metadata$Hour)
+
+DS_metadata<-read.table("Ds.metadata.txt", header = T, stringsAsFactors = F)
+DS_metadata$Time_point<-factor(DS_metadata$Time_point)
+
+# Calculate normalization factors
+
+ed <- DGEList(counts2)
+ed <- calcNormFactors(ed)
+ed$samples #just prints list of the calculated library sizes and normalization factors for each of the samples; library size is based on the sum of the counts unless you specify otherwise
+
+
+# Make MDS plot
+tiff("DS_MDS.tiff", height = 600, width = 500)
+par(oma = c(5,0,0,0)) # expand outer margins to make room for legend
+plotgroup <- interaction(DS_metadata$Temp_treat, DS_metadata$Time_point)
+#plotMDS(ed, col = as.numeric(plotgroup), xlim = c(-2.5,3))
+plotMDS(ed, col = as.numeric(plotgroup))
+# Position legend
+leg.x <- par("usr")[1] 
+leg.y <- par("usr")[3] - .5
+par(xpd = NA) # Allows legend to go outside plot frame
+ltext <- gsub(".", "/", levels(plotgroup), fixed = T)
+legend(x = leg.x, y = leg.y, legend = ltext, text.col = 1:6,
+		title = "Temp/Time", cex = .9)
+par(xpd = F, oma = c(0,0,0,0)) # put everything back to normal
+dev.off()
+#may want to remove DS.T3.t60.5 as outlier if biologically warranted-come back to
+
+######################################################
+# Fitting GLMs- from manual:
+# The CR method is based on the idea of approximate conditional likelihood which reduces
+# to residual maximum likelihood. Given a table counts or a DGEList object and the design
+# matrix of the experiment, generalized linear models are fitted. This allows valid estimation
+# of the dispersion, since all systematic sources of variation are accounted for.
+
+# The CR method can be used to calculate a common dispersion for all the tags, trended
+# dispersion depending on the tag abundance, or separate dispersions for individual tags.
+# These can be done by calling the function estimateDisp() with a specified design. Alternatively, 
+#one can estimate the common, trended and tagwise dispersions separately using
+# estimateGLMCommonDisp(), estimateGLMTrendedDisp() and estimateGLMTagwiseDisp(), 
+#   respectively. The tagwise dispersion approach is strongly recommended in multi-factor 
+#   experiment cases.
+
+#Model with temp and time point
+#blythe's code:
+#splittail: mm <- model.matrix(~Population*Hour, data = pdata, contrasts = list(Hour = "contr.sum")) #http://www.inside-r.org/r-doc/stats/contrast
+#amended for DS-but not sure how to get the contrasts in the list correct in this way
+#mm <- model.matrix(~Temp_treat*Time_point, data = DS_metadata)
+#y <- estimateGLMCommonDisp(ed, mm)#estimate the common dispersion
+#y <- estimateGLMTrendedDisp(y, mm)#estimate the trended dispersion
+#y <- estimateGLMTagwiseDisp(y, mm)#estimate the tagwise dispersion
+#fit <- glmFit(y, mm)#Given raw counts, dispersion(s) and a design matrix, glmFit() 
+#fits the negative binomial GLM for each tag and produces an object of class DGEGLM with some new components.
+
+#Using code from EdgeR manual instead-pg34:
+# One can compare any of the treatment groups using the contrast argument of the glmLRT function.
+# For example:  
+# design <- model.matrix(~0+group, data=y$samples)
+# colnames(design) <- levels(y$samples$group)
+# design
+#   output:       
+#               A B C
+#      sample.1 1 0 0
+#      sample.2 1 0 0
+#      sample.3 0 1 0
+#      sample.4 0 1 0
+#      sample.5 0 0 1
+# 
+# fit <- glmFit(y, design)
+# lrt <- glmLRT(fit, contrast=c(-1,1,0))
+# topTags(lrt)
+#will compare B to A. The meaning of the contrast is to make the comparison
+#   -1*A + 1*B + 0*C, which is of course is simply B-A.
+
+#My data:
+DS_metadata$Condition<-factor(paste(DS_metadata$Temp_treat,DS_metadata$Time_point,sep="."))#combining two factors to be one
+design<-model.matrix(~0+Condition, data=DS_metadata) #Here, the 0+ in the model formula is an instruction not to include an intercept column and instead to include a column for each group.
+colnames(design)<-levels(DS_metadata$Condition)
+design
+# columns in order are: HC.0 HC.60 T2.0 T2.60 T3.0 T3.60 T4.0 T4.60
+y <- estimateGLMCommonDisp(ed, design)#estimate the common dispersion
+y <- estimateGLMTrendedDisp(y, design)#estimate the trended dispersion
+y <- estimateGLMTagwiseDisp(y, design)#estimate the tagwise dispersion
+fit<-glmFit(y,design)
+colnames(fit)# just checking columns in same order are: HC.0 HC.60 T2.0 T2.60 T3.0 T3.60 T4.0 T4.60
+
+#so to then test contrasts, can either specify by column #, or by naming them specifically.
+#e.g., if we want to compare HC.0 vs T2.0, can specify either:
+
+lrt <- glmLRT(fit, contrast=c(-1,0,1,0,0,0,0,0))
+#will compare T2.0 to HC.0. The meaning of the contrast is to make the comparison
+#   -1*HC.0 + 1*T2.0 + 0*all the others, which is of course is simply T2.0-HC.0.
+topTags(lrt)
+
+#or, can just specifically name the contrasts that we want and then run them:
+my.contrasts <- makeContrasts(T2.HC.0 = T2.0-HC.0,levels=design)
+lrt <- glmLRT(fit, contrast=my.contrasts[,"T2.HC.0"])
+topTags(lrt)
+
+#so just to make it obvious for now, just using the names, but will 
+#switch to other method later to perhaps
+#make easier in the future if manipulating many, amending script to new data, etc.
+my.contrasts <- makeContrasts(
+T2.HC.0 = T2.0-HC.0,
+T3.HC.0 = T3.0-HC.0,
+T4.HC.0 = T4.0-HC.0,
+T2.HC.60 = T2.60-HC.60,
+T3.HC.60 = T3.60-HC.60,
+T4.HC.60 = T4.60-HC.60,
+T2.60.0 = T2.60-T2.0,
+T3.60.0 = T3.60-T3.0,
+T4.60.0 = T4.60-T4.0,
+levels=design)
+
+lrt <- glmLRT(fit, contrast=my.contrasts[,"T2.HC.0"])
+topTags(lrt)
+tmp <- topTags(lrt, n = Inf)
+tmp2 <- tmp$table[,c(1,2,4,5)]
+tmp2 <- cbind(rownames(tmp), tmp2)
+names(tmp2)[1] <- "Gene"
+#if want to write to file on it's own:
+write.table(tmp2, file = "DS.T2.HC.0_contrast.txt", sep = "\t", quote = F, row.names = F)
+#for if want to prep to combine into one table at end:
+#str(tmp2)
+library(plyr)
+T2.HC.0<-rename(tmp2, c("logFC"="T2.HC.0_logFC", 
+                        "logCPM"="T2.HC.0_logCPM","PValue"="T2.HC.0_PValue","FDR"="T2.HC.0_FDR"))
+
+lrt <- glmLRT(fit, contrast=my.contrasts[,"T3.HC.0"])
+topTags(lrt)
+tmp <- topTags(lrt, n = Inf)
+tmp2 <- tmp$table[,c(1,2,4,5)]
+tmp2 <- cbind(rownames(tmp), tmp2)
+names(tmp2)[1] <- "Gene"
+write.table(tmp2, file = "DS.T3.HC.0_contrast.txt", sep = "\t", quote = F, row.names = F)
+T3.HC.0<-rename(tmp2, c("logFC"="T3.HC.0_logFC", 
+                        "logCPM"="T3.HC.0_logCPM","PValue"="T3.HC.0_PValue","FDR"="T3.HC.0_FDR"))
+
+lrt <- glmLRT(fit, contrast=my.contrasts[,"T4.HC.0"])
+topTags(lrt)
+tmp <- topTags(lrt, n = Inf)
+tmp2 <- tmp$table[,c(1,2,4,5)]
+tmp2 <- cbind(rownames(tmp), tmp2)
+names(tmp2)[1] <- "Gene"
+write.table(tmp2, file = "DS.T4.HC.0_contrast.txt", sep = "\t", quote = F, row.names = F)
+T4.HC.0<-rename(tmp2, c("logFC"="T4.HC.0_logFC", 
+                        "logCPM"="T4.HC.0_logCPM","PValue"="T4.HC.0_PValue","FDR"="T4.HC.0_FDR"))
+
+lrt <- glmLRT(fit, contrast=my.contrasts[,"T2.HC.60"])
+topTags(lrt)
+tmp <- topTags(lrt, n = Inf)
+tmp2 <- tmp$table[,c(1,2,4,5)]
+tmp2 <- cbind(rownames(tmp), tmp2)
+names(tmp2)[1] <- "Gene"
+write.table(tmp2, file = "DS.T2.HC.60_contrast.txt", sep = "\t", quote = F, row.names = F)
+T2.HC.60<-rename(tmp2, c("logFC"="T2.HC.60_logFC", 
+                        "logCPM"="T2.HC.60_logCPM","PValue"="T2.HC.60_PValue","FDR"="T2.HC.60_FDR"))
+
+lrt <- glmLRT(fit, contrast=my.contrasts[,"T3.HC.60"])
+topTags(lrt)
+tmp <- topTags(lrt, n = Inf)
+tmp2 <- tmp$table[,c(1,2,4,5)]
+tmp2 <- cbind(rownames(tmp), tmp2)
+names(tmp2)[1] <- "Gene"
+write.table(tmp2, file = "DS.T3.HC.60_contrast.txt", sep = "\t", quote = F, row.names = F)
+T3.HC.60<-rename(tmp2, c("logFC"="T3.HC.60_logFC", 
+                        "logCPM"="T3.HC.60_logCPM","PValue"="T3.HC.60_PValue","FDR"="T3.HC.60_FDR"))
+
+lrt <- glmLRT(fit, contrast=my.contrasts[,"T4.HC.60"])
+topTags(lrt)
+tmp <- topTags(lrt, n = Inf)
+tmp2 <- tmp$table[,c(1,2,4,5)]
+tmp2 <- cbind(rownames(tmp), tmp2)
+names(tmp2)[1] <- "Gene"
+write.table(tmp2, file = "DS.T4.HC.60_contrast.txt", sep = "\t", quote = F, row.names = F)
+T4.HC.60<-rename(tmp2, c("logFC"="T4.HC.60_logFC", 
+                        "logCPM"="T4.HC.60_logCPM","PValue"="T4.HC.60_PValue","FDR"="T4.HC.60_FDR"))
+
+lrt <- glmLRT(fit, contrast=my.contrasts[,"T2.60.0"])
+topTags(lrt)
+tmp <- topTags(lrt, n = Inf)
+tmp2 <- tmp$table[,c(1,2,4,5)]
+tmp2 <- cbind(rownames(tmp), tmp2)
+names(tmp2)[1] <- "Gene"
+write.table(tmp2, file = "DS.T2.60.0_contrast.txt", sep = "\t", quote = F, row.names = F)
+T2.60.0<-rename(tmp2, c("logFC"="T2.60.0_logFC", 
+                        "logCPM"="T2.60.0_logCPM","PValue"="T2.60.0_PValue","FDR"="T2.60.0_FDR"))
+
+lrt <- glmLRT(fit, contrast=my.contrasts[,"T3.60.0"])
+topTags(lrt)
+tmp <- topTags(lrt, n = Inf)
+tmp2 <- tmp$table[,c(1,2,4,5)]
+tmp2 <- cbind(rownames(tmp), tmp2)
+names(tmp2)[1] <- "Gene"
+write.table(tmp2, file = "DS.T3.60.0_contrast.txt", sep = "\t", quote = F, row.names = F)
+T3.60.0<-rename(tmp2, c("logFC"="T3.60.0_logFC", 
+                        "logCPM"="T3.60.0_logCPM","PValue"="T3.60.0_PValue","FDR"="T3.60.0_FDR"))
+
+lrt <- glmLRT(fit, contrast=my.contrasts[,"T4.60.0"])
+topTags(lrt)
+tmp <- topTags(lrt, n = Inf)
+tmp2 <- tmp$table[,c(1,2,4,5)]
+tmp2 <- cbind(rownames(tmp), tmp2)
+names(tmp2)[1] <- "Gene"
+write.table(tmp2, file = "DS.T4.60.0_contrast.txt", sep = "\t", quote = F, row.names = F)
+T4.60.0<-rename(tmp2, c("logFC"="T4.60.0_logFC", 
+                        "logCPM"="T4.60.0_logCPM","PValue"="T4.60.0_PValue","FDR"="T4.60.0_FDR"))
+
+#merge into one table:
+merge<-merge(T2.60.0,T2.HC.0,by="Gene")
+merge<-merge(merge,T2.HC.60,by="Gene")
+merge<-merge(merge,T3.60.0,by="Gene")
+merge<-merge(merge,T3.HC.0,by="Gene")
+merge<-merge(merge,T3.HC.60,by="Gene")
+merge<-merge(merge,T4.60.0,by="Gene")
+merge<-merge(merge,T4.HC.0,by="Gene")
+merge<-merge(merge,T4.HC.60,by="Gene")
+View(merge)
+write.table(merge, file = "compiled_contrasts.txt", sep = "\t", quote = F, row.names = F)
+
+#pulling in annotation:
+annot.DS<-read.csv('./delta_smelt_annotation_files/delta_by_gene_nr_annot_GO.csv', header = FALSE)
+annot.DS<-annot.DS[,1:2]#removing GO info for now
+annot.DS.unique<-(unique(annot.DS[,1:2]))#removing redudancies
+annot.DS.unique1<-rename(annot.DS.unique, c("V1"="Gene", 
+                        "V2"="Gene_name"))#renaming to match contrast files
+
+annot_compiled_contrasts<-merge(merge,annot.DS.unique1,by="Gene",all.x=TRUE)#merging with annotation but keeping data even for those without annotation
+annot_compiled_contrasts<-annot_compiled_contrasts[,c(1,38,2:37)]#just rearranging columns
+write.table(annot_compiled_contrasts, file = "annot_compiled_contrasts.txt", sep = "\t", quote = F, row.names = F)
+
+```
+[1]:https://support.bioconductor.org/p/62173/
