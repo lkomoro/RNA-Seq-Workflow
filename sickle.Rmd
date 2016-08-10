@@ -34,9 +34,10 @@ sickle pe \
 
 done
 ```
-The next step in the workflow is alignment to a reference genome, [transcriptome][2], or de novo assembly. 
+The next step in the workflow is alignment to a reference [genome][3], [transcriptome][2], or de novo assembly. 
 
 For more information about sickle, see the README file on its [GitHub page][1].
 
 [1]:https://github.com/ucdavis-bioinformatics/sickle
 [2]:https://github.com/lkomoro/RNA-Seq-Workflow/blob/master/BWA.Rmd
+[3]:https://github.com/lkomoro/RNA-Seq-Workflow/blob/master/tophat.Rmd
