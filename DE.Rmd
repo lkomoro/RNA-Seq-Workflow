@@ -73,24 +73,14 @@ The CR method is based on the idea of approximate conditional likelihood which r
 
 The CR method can be used to calculate a common dispersion for all the tags, trended dispersion depending on the tag abundance, or separate dispersions for individual tags. These can be done by calling the function estimateDisp() with a specified design. Alternatively, one can estimate the common, trended and tagwise dispersions separately using estimateGLMCommonDisp(), estimateGLMTrendedDisp() and estimateGLMTagwiseDisp(), respectively. The tagwise dispersion approach is strongly recommended in multi-factor experiment cases.
 
-Model with 2 factors: exposure temperature and time point
+#####Model with 2 factors, e.g., exposure temperature and time point  
+Using code from EdgeR manual (pg34):  
+One can compare any of the treatment groups using the contrast argument of the glmLRT function.  
+*For example:*  
 ```{r EdgeR GLM}
-#blythe's code:
-#splittail: mm <- model.matrix(~Population*Hour, data = pdata, contrasts = list(Hour = "contr.sum")) #http://www.inside-r.org/r-doc/stats/contrast
-#amended for DS-but not sure how to get the contrasts in the list correct in this way
-#mm <- model.matrix(~Temp_treat*Time_point, data = DS_metadata)
-#y <- estimateGLMCommonDisp(ed, mm)#estimate the common dispersion
-#y <- estimateGLMTrendedDisp(y, mm)#estimate the trended dispersion
-#y <- estimateGLMTagwiseDisp(y, mm)#estimate the tagwise dispersion
-#fit <- glmFit(y, mm)#Given raw counts, dispersion(s) and a design matrix, glmFit() 
-#fits the negative binomial GLM for each tag and produces an object of class DGEGLM with some new components.
-
-#Using code from EdgeR manual instead-pg34:
-# One can compare any of the treatment groups using the contrast argument of the glmLRT function.
-# For example:  
-# design <- model.matrix(~0+group, data=y$samples)
-# colnames(design) <- levels(y$samples$group)
-# design
+design <- model.matrix(~0+group, data=y$samples)
+colnames(design) <- levels(y$samples$group)
+design
 #   output:       
 #               A B C
 #      sample.1 1 0 0
@@ -99,13 +89,15 @@ Model with 2 factors: exposure temperature and time point
 #      sample.4 0 1 0
 #      sample.5 0 0 1
 # 
-# fit <- glmFit(y, design)
-# lrt <- glmLRT(fit, contrast=c(-1,1,0))
-# topTags(lrt)
+fit <- glmFit(y, design)
+lrt <- glmLRT(fit, contrast=c(-1,1,0))
+topTags(lrt)
 #will compare B to A. The meaning of the contrast is to make the comparison
 #   -1*A + 1*B + 0*C, which is of course is simply B-A.
+```
 
-#My data:
+Real Data
+```{r EdgeR GLM}
 DS_metadata$Condition<-factor(paste(DS_metadata$Temp_treat,DS_metadata$Time_point,sep="."))#combining two factors to be one
 design<-model.matrix(~0+Condition, data=DS_metadata) #Here, the 0+ in the model formula is an instruction not to include an intercept column and instead to include a column for each group.
 colnames(design)<-levels(DS_metadata$Condition)
@@ -114,8 +106,12 @@ design
 y <- estimateGLMCommonDisp(ed, design)#estimate the common dispersion
 y <- estimateGLMTrendedDisp(y, design)#estimate the trended dispersion
 y <- estimateGLMTagwiseDisp(y, design)#estimate the tagwise dispersion
-fit<-glmFit(y,design)
+fit<-glmFit(y,design)#Given raw counts, dispersion(s) and a design matrix, glmFit()
 colnames(fit)# just checking columns in same order are: HC.0 HC.60 T2.0 T2.60 T3.0 T3.60 T4.0 T4.60
+
+
+ 
+#fits the negative binomial GLM for each tag and produces an object of class DGEGLM with some new components.
 
 #so to then test contrasts, can either specify by column #, or by naming them specifically.
 #e.g., if we want to compare HC.0 vs T2.0, can specify either:
