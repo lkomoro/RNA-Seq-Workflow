@@ -129,6 +129,7 @@ topTags(lrt)
 To just to make it obvious for now, just using the names, but will 
 #switch to other method later to perhaps
 #make easier in the future if manipulating many, amending script to new data, etc.
+```{r EdgeR contrast}
 my.contrasts <- makeContrasts(
 T2.HC.0 = T2.0-HC.0,
 T3.HC.0 = T3.0-HC.0,
