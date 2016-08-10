@@ -108,25 +108,25 @@ y <- estimateGLMTrendedDisp(y, design)#estimate the trended dispersion
 y <- estimateGLMTagwiseDisp(y, design)#estimate the tagwise dispersion
 fit<-glmFit(y,design)#Given raw counts, dispersion(s) and a design matrix, glmFit()
 colnames(fit)# just checking columns in same order are: HC.0 HC.60 T2.0 T2.60 T3.0 T3.60 T4.0 T4.60
-
-
- 
 #fits the negative binomial GLM for each tag and produces an object of class DGEGLM with some new components.
+```
 
-#so to then test contrasts, can either specify by column #, or by naming them specifically.
-#e.g., if we want to compare HC.0 vs T2.0, can specify either:
-
+So to then test contrasts, can either specify by column #, or by naming them specifically.  
+*e.g., if we want to compare HC.0 vs T2.0, can specify either:*
+```{r EdgeR contrast}
 lrt <- glmLRT(fit, contrast=c(-1,0,1,0,0,0,0,0))
 #will compare T2.0 to HC.0. The meaning of the contrast is to make the comparison
 #   -1*HC.0 + 1*T2.0 + 0*all the others, which is of course is simply T2.0-HC.0.
 topTags(lrt)
-
-#or, can just specifically name the contrasts that we want and then run them:
+```
+Or, we can just specifically name the contrasts that we want and then run them:
+```{r EdgeR contrast}
 my.contrasts <- makeContrasts(T2.HC.0 = T2.0-HC.0,levels=design)
 lrt <- glmLRT(fit, contrast=my.contrasts[,"T2.HC.0"])
 topTags(lrt)
+```
 
-#so just to make it obvious for now, just using the names, but will 
+To just to make it obvious for now, just using the names, but will 
 #switch to other method later to perhaps
 #make easier in the future if manipulating many, amending script to new data, etc.
 my.contrasts <- makeContrasts(
