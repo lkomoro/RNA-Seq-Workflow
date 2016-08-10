@@ -4,6 +4,7 @@ author: "Lisa Komoroske"
 date: "August 10, 2016"
 output: html_document
 ---
+*work in progress-not completed yet*
 
 ##Differential Expression Analysis of RNA-Seq Data
 
