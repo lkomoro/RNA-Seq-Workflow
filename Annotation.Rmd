@@ -26,3 +26,5 @@ annot_compiled_contrasts<-merge(merge,annot.DS.unique1,by="Gene",all.x=TRUE)#mer
 annot_compiled_contrasts<-annot_compiled_contrasts[,c(1,38,2:37)]#just rearranging columns
 write.table(annot_compiled_contrasts, file = "annot_compiled_contrasts.txt", sep = "\t", quote = F, row.names = F)
 ```
+
+*add more here for Limma output and prepping for downstream GO analyses, etc.*
