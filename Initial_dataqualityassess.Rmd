@@ -1,0 +1,12 @@
+---
+title: "Initial quality assessments"
+author: "Lisa Komoroske"
+date: "August 11, 2016"
+output: html_document
+---
+
+*work in progress to be filled in later*
+
+####The nest step in the workflow is [file concatenation][1] (if needed, otherwise can skip to [evaluation of data quality][2])
+[1]:https://github.com/lkomoro/RNA-Seq-Workflow/blob/master/Concatenation.Rmd
+[2]:https://github.com/lkomoro/RNA-Seq-Workflow/blob/master/fastqc.Rmd
