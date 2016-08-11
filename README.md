@@ -22,7 +22,7 @@ Follow the links above for instructions and code for each step of the workflow.
 [4]: https://github.com/lkomoro/RNA-Seq-Workflow/blob/master/BWA.Rmd
 [5]: https://github.com/lkomoro/RNA-Seq-Workflow/blob/master/processing_alignments.Rmd
 [6]:https://github.com/lkomoro/RNA-Seq-Workflow/blob/master/tophat.Rmd
-[7]:https://github.com/lkomoro/RNA-Seq-Workflow/blob/master/NGS.sample.org.nested.for.loop_GITcopy.R
+[7]:https://github.com/lkomoro/RNA-Seq-Workflow/blob/master/Concatenation.Rmd
 [8]:https://github.com/lkomoro/RNA-Seq-Workflow/blob/master/DE.Rmd
 [9]:https://github.com/lkomoro/RNA-Seq-Workflow/blob/master/Annotation.Rmd
 [10]:https://github.com/bluegenes/MakeMyTranscriptome
