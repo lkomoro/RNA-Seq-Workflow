@@ -138,7 +138,11 @@ T2.60.0 = T2.60-T2.0,
 T3.60.0 = T3.60-T3.0,
 T4.60.0 = T4.60-T4.0,
 levels=design)
+```
 
+Run contrasts:
+```{r EdgeR contrast}
+#first one
 lrt <- glmLRT(fit, contrast=my.contrasts[,"T2.HC.0"])
 topTags(lrt)
 tmp <- topTags(lrt, n = Inf)
@@ -146,18 +150,19 @@ tmp2 <- tmp$table[,c(1,2,4,5)]
 tmp2 <- cbind(rownames(tmp), tmp2)
 names(tmp2)[1] <- "Gene"
 ```
-If want to write to file on it's own:
+If want to write to file on it's own, can output with:
 ```{r EdgeR write}
 write.table(tmp2, file = "DS.T2.HC.0_contrast.txt", sep = "\t", quote = F, row.names = F)
 ```
-
-If want to prep to combine into one table at end:
-```{r EdgeR write}
-#str(tmp2)
+And/or, can prep to combine into one table at end:
+```{r EdgeR prepcombine}
+str(tmp2)#just double checking structure
 library(plyr)
 T2.HC.0<-rename(tmp2, c("logFC"="T2.HC.0_logFC", 
                         "logCPM"="T2.HC.0_logCPM","PValue"="T2.HC.0_PValue","FDR"="T2.HC.0_FDR"))
-
+```
+Repeat for others:
+```{r EdgeR contrast}
 lrt <- glmLRT(fit, contrast=my.contrasts[,"T3.HC.0"])
 topTags(lrt)
 tmp <- topTags(lrt, n = Inf)
