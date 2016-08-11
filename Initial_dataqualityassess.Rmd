@@ -5,7 +5,13 @@ date: "August 11, 2016"
 output: html_document
 ---
 
-*work in progress to be filled in later*
+*work in progress to be filled in last since this often done already by sequencing centers*
+
+-looking at report typically sent from sequencing center for coverage, evenness, etc.
+-checking demultiplexed correctly (via matching indexes)
+-check if reads that didn't pass quality filter are removed (varies by genome center)-this is short command line grep of ":Y" in fastq file
+-other checks transfer from notes
+
 
 ####The nest step in the workflow is [file concatenation][1] (if needed, otherwise can skip to [evaluation of data quality][2])
 [1]:https://github.com/lkomoro/RNA-Seq-Workflow/blob/master/Concatenation.Rmd
