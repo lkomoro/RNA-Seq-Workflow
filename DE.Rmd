@@ -258,6 +258,9 @@ View(merge)
 write.table(merge, file = "compiled_contrasts.txt", sep = "\t", quote = F, row.names = F)
 ```
 
+###Option 1. DE with Limma Voom
+
+
 ####Next step in the workflow is [Annotation][2]
 [1]:https://support.bioconductor.org/p/62173/
 [2]:https://github.com/lkomoro/RNA-Seq-Workflow/blob/master/Annotation.Rmd
