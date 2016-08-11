@@ -257,16 +257,7 @@ merge<-merge(merge,T4.HC.60,by="Gene")
 View(merge)
 write.table(merge, file = "compiled_contrasts.txt", sep = "\t", quote = F, row.names = F)
 ```
-Pull in annotation:
-```{r EdgeR annotation}
-annot.DS<-read.csv('./delta_smelt_annotation_files/delta_by_gene_nr_annot_GO.csv', header = FALSE)
-annot.DS<-annot.DS[,1:2]#removing GO info for now
-annot.DS.unique<-(unique(annot.DS[,1:2]))#removing redudancies
-annot.DS.unique1<-rename(annot.DS.unique, c("V1"="Gene", 
-                        "V2"="Gene_name"))#renaming to match contrast files
 
-annot_compiled_contrasts<-merge(merge,annot.DS.unique1,by="Gene",all.x=TRUE)#merging with annotation but keeping data even for those without annotation
-annot_compiled_contrasts<-annot_compiled_contrasts[,c(1,38,2:37)]#just rearranging columns
-write.table(annot_compiled_contrasts, file = "annot_compiled_contrasts.txt", sep = "\t", quote = F, row.names = F)
-```
+####Next step in the workflow is [Annotation][2]
 [1]:https://support.bioconductor.org/p/62173/
+[2]:https://github.com/lkomoro/RNA-Seq-Workflow/blob/master/Annotation.Rmd
