@@ -6,7 +6,7 @@ output: html_document
 ---
 *work in progress-not completed yet*
 
-##Differential Expression Analysis of RNA-Seq Data
+##Differential Expression Analysis of RNA-Seq Data 
 
 Currently, there are several packages for DE expression in R (EdgeR, Limma, and DESeq2; also Cufflinks for data aligned with Tophat/Bowtie), each have their pros and cons/fans and haters. Like many things in science, I often end up trying things a bunch of different ways to understand what parameters are affecting the outcomes, and in the end, to convince myself that the patterns we are seeing are robust and 'true' to the data. Here I include code I've used for EdgeR and Limma packages for DE Analysis. Additionally, Meeta Mistry has some great DE resources/examples on github [here] [3]
 
