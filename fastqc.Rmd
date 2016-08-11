@@ -8,7 +8,7 @@ To generate reports for batches of files, run the following command:
 
 ```nohup fastqc -f fastq -t 32 *.fastq > fastqc.stdout 2> fastqc.stderr &```
 
-###Evaluating the FastQC reports1
+###Evaluating the FastQC reports
 
 For each file analyzed, FastQC will output an HTML formatted report of the results as well as a zipped folder containing reports for each test run by FastQC.Pay close attention to the results for the restults for the following:
 
