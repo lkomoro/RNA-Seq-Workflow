@@ -8,7 +8,7 @@ This workflow will guide users through the steps and software tools used for RNA
 - Alignment to a reference [genome][6], [transcriptome][4], or de novo assembly
 - [Processing alignments and creating a table of raw counts] [5]
 - [Differential expression analysis][8]
-- Annotation
+- [Annotation][9]
 
 Follow the links above for instructions and code for each step of the workflow.
 
@@ -20,3 +20,4 @@ Follow the links above for instructions and code for each step of the workflow.
 [6]:https://github.com/lkomoro/RNA-Seq-Workflow/blob/master/tophat.Rmd
 [7]:https://github.com/lkomoro/RNA-Seq-Workflow/blob/master/NGS.sample.org.nested.for.loop_GITcopy.R
 [8]:https://github.com/lkomoro/RNA-Seq-Workflow/blob/master/DE.Rmd
+[9]:https://github.com/lkomoro/RNA-Seq-Workflow/blob/master/Annotation.Rmd
