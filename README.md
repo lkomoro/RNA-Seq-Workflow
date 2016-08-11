@@ -4,7 +4,7 @@ This workflow will guide users through steps and some common software tools used
 
 #####The main steps of this workflow are:
 
-- Initial quality assesments and [file concatenation][7]
+- [Initial quality assesments][11] and [file concatenation][7]
 - Evaluation of data quality with [FastQC][3] 
 - Adapter trimming with [scythe][1] and low-quality trimming with [sickle][2]
 - Alignment to a reference [genome][6], [transcriptome][4], or de novo assembly*
@@ -28,3 +28,4 @@ Follow the links above for instructions and code for each step of the workflow.
 [8]:https://github.com/lkomoro/RNA-Seq-Workflow/blob/master/DE.Rmd
 [9]:https://github.com/lkomoro/RNA-Seq-Workflow/blob/master/Annotation.Rmd
 [10]:https://github.com/bluegenes/MakeMyTranscriptome
+[11]:https://github.com/lkomoro/RNA-Seq-Workflow/blob/master/Initial_dataqualityassess.Rmd
