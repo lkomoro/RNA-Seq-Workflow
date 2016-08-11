@@ -10,8 +10,9 @@ This workflow will guide users through the steps and software tools used for RNA
 - [Differential expression analysis][8]
 - [Annotation][9]
 
-Follow the links above for instructions and code for each step of the workflow.
-*The workflows above use reference alignments, but good resources for de novo assembly and alignment include:
+Follow the links above for instructions and code for each step of the workflow.  
+
+**The workflows above use reference alignments, but good resources for de novo assembly and alignment include:*
 - Salmon
 - [MakeMyTranscriptome][10] (Tessa Pierce, SIO)
 
