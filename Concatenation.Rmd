@@ -4,10 +4,11 @@ author: "Lisa Komoroske"
 date: "August 11, 2016"
 output: html_document
 ---
-###Sample Concatenation
-Below is a nested for loop R script for automated file concatenation by sample-this would be useful when you have a significant number of samples (so you don't want to have to use *cat* in the command line to do one by one) that are pooled and sequenced across several/many lanes. The data we get from our genome center is demultiplexed, so we have two files (forward and reverse= R1s and R2s, respectively) for sample for each lane (i.e., so if I sequence across 3 lanes, I have 3 R1 files and 3 R2 files for each sample).
+###Sample Concatenation  
+Below is a nested for loop R script for automated file concatenation by sample  
+This would be useful when you have a significant number of samples (so you don't want to have to use *cat* in the command line to do one by one) that are pooled and sequenced across several/many lanes. The data we get from our genome center is demultiplexed, so we have two files (forward and reverse= R1s and R2s, respectively) for sample for each lane (i.e., so if I sequence across 3 lanes, I have 3 R1 files and 3 R2 files for each sample).
 
-Additionally, the 'nested' part here deals with multiple sequence runs (i.e., we ran three lanes first to check our DoC, then calculated we needed to run an additional 6 lanes of our library that had 96 samples pooled). But, if you have a simpler scenario (all in one run), you can just amend to use without the nested part. 
+The 'nested' part here deals with multiple sequence runs (i.e., we ran three lanes first to check our DoC, then calculated we needed to run an additional 6 lanes of our library that had 96 samples pooled). But, if you have a simpler scenario (all in one run), you can just amend to use without the nested part. 
 
 
 ```{r forLoop, echo=TRUE}
