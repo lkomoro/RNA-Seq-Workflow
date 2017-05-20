@@ -40,6 +40,7 @@ for (i in 1:length(subdirs)){
   } 
   
 } 
+```
 
 ```{r forLoop2, echo=TRUE}
 setwd('...')#make this your parent directory
