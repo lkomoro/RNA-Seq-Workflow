@@ -69,5 +69,8 @@ for (i in 1:length(subdirs)){
 } 
 ```
 
-####The next step in the workflow is evaluation of data quality with [FastQC][1]  
-[1]: https://github.com/lkomoro/RNA-Seq-Workflow/blob/master/fastqc.Rmd
+####The next step in the workflow is evaluation of data quality with [FastQC][1].
+
+[1]:https://github.com/lkomoro/RNA-Seq-Workflow/blob/master/fastqc.Rmd
+
+
