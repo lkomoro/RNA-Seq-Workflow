@@ -68,5 +68,5 @@ for (i in 1:length(subdirs)){
     write(t, file= paste0(ID2, "_",outfile2), append=TRUE)} 
 } 
 ```
-####The nest step in the workflow is evaluation of data quality with [FastQC][1]
+####The nest step in the workflow is evaluation of data quality with [FastQC][1]  
 [1]:https://github.com/lkomoro/RNA-Seq-Workflow/blob/master/fastqc.Rmd
