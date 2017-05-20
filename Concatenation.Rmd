@@ -12,7 +12,7 @@ The 'nested' part here deals with multiple sequence runs (i.e., we ran three lan
 
 **update: May 2017: I added option #2 (below) that is better suited to work with naming files according to a unique sample ID that is in the file name, rather than the folder (directory). 
 
-
+*Option #1*
 ```{r forLoop, echo=TRUE}
 
 setwd('...')#make this your parent directory
@@ -42,6 +42,7 @@ for (i in 1:length(subdirs)){
 } 
 ```
 
+*Option #2*
 ```{r forLoop2, echo=TRUE}
 setwd('...')#make this your parent directory
 getwd()
