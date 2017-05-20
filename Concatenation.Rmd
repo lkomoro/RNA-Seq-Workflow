@@ -8,7 +8,9 @@ output: html_document
 Below is a nested for loop R script for automated file concatenation by sample  
 This would be useful when you have a significant number of samples (so you don't want to have to use *cat* in the command line to do one by one) that are pooled and sequenced across several/many lanes. The data we get from our genome center is demultiplexed, so we have two files (forward and reverse= R1s and R2s, respectively) for sample for each lane (i.e., so if I sequence across 3 lanes, I have 3 R1 files and 3 R2 files for each sample).
 
-The 'nested' part here deals with multiple sequence runs (i.e., we ran three lanes first to check our DoC, then calculated we needed to run an additional 6 lanes of our library that had 96 samples pooled). But, if you have a simpler scenario (all in one run), you can just amend to use without the nested part. 
+The 'nested' part here deals with multiple sequence runs (i.e., we ran three lanes first to check our DoC, then calculated we needed to run an additional 6 lanes of our library that had 96 samples pooled). But, this may also be useful if you get your samples back in one folder for each lane that you multiplexed your samples across. Of course, if you have a simpler scenario (all in one run/folder), you can just amend to use the for loop without the nested part. 
+
+**update: May 2017: I added option #2 (below) that is better suited to work with naming files according to a unique sample ID that is in the file name, rather than the folder (directory). 
 
 
 ```{r forLoop, echo=TRUE}
@@ -39,7 +41,31 @@ for (i in 1:length(subdirs)){
   
 } 
 
+```{r forLoop2, echo=TRUE}
+setwd('...')#make this your parent directory
+getwd()
+parent <- '...'#change this to be whatever folder all your sample subfolders live in
+subdirs <- list.dirs(parent,full.names=TRUE,recursive=FALSE)#need recursive to be false else it includes the parent directory as well in the list and messes up the length, etc.
+outfile1 <- "combined_R1"
+outfile2 <- "combined_R2"
+for (i in 1:length(subdirs)){ 
+  dir1 <- subdirs[i]
+  sequences <- list.files(dir1,full.names=TRUE)#needs to be true so it has the full paths of the directories to go into
+  R1s <- grep("R1", sequences)
+  R2s <- grep("R2", sequences)#note that if you have a 'data' subdirectory with the summary stats, etc. you may need to move it out of the parent directory first, because since it doesn't contain any files that have 'R1' or 'R2' in the name, the for loop may get stuck there.
+  
+  for (k in 1:length(R1s)){
+    t <- scan(file = sequences[R1s[k]], what = 'character',sep="\r",quote="")
+    ID<-strsplit(sequences[R1s[k]],'/')[[1]][7]
+    ID2<- strsplit(ID,'_')[[1]][1]
+    write(t, file= paste0(ID2, "_",outfile1), append=TRUE)}
+  
+  for (k in 1:length(R2s)){
+    t <- scan(file = sequences[R2s[k]], what = 'character',sep="\r",quote="")
+    ID<-strsplit(sequences[R2s[k]],'/')[[1]][7]
+    ID2<- strsplit(ID,'_')[[1]][1]
+    write(t, file= paste0(ID2, "_",outfile2), append=TRUE)} 
+} 
 ```
-
 ####The nest step in the workflow is evaluation of data quality with [FastQC][1]
 [1]:https://github.com/lkomoro/RNA-Seq-Workflow/blob/master/fastqc.Rmd
