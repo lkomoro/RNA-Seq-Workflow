@@ -1,36 +1,18 @@
 ##Genome alignment with TopHat
 
-[TopHat][1] aligns reads up to 1024 bp long to a genome in order to identify splice junctions using the read-mapping program Bowtie. TopHat first splits all reads into shorter segments to be mapped independently in order to locate short exons in the mapping. The program then performs an initial mapping where it maps reads to the genome and builds a database of possible splice junctions based off of evidence from the initial mapping. The splice junction database is created by looking for places in the mapping where two segments from the same read are mapped at a certain distance on the same genomic sequence or when an internal segment fails to map. This suggests that such reads are spanning multiple exons. The database is also created by looking for areas of piled up reads in the initial mapping known as coverage islands. Neighboring coverage islands are often spliced together in the transcriptome, so the program looks for ways to join these islands with an intron. TopHat then maps the reads a second time against these splice junctions to confirm their locations.  
+This step uses [TopHat][1] in addition to [Bowtie2][2] and [SAMtools][3].
 
-In addition to downloading TopHat, you will also have to install [Bowtie][2] and [SAMtools][3].
+The first step in this process is to index the reference genome with Bowtie2. Creating an index for a reference sequence increases the speed of the alignment because it allows the program to quickly place reads on that sequence at locations where the program knows at least a piece of a read matches perfectly or with few mismatches.
 
-Run the following script:
+The following script will index your reference genome FASTA file:
 
 ```
-/share/apps/samtools-0.1.19/samtools faidx Reference_Genome.fasta
+reference=Reference_Filename.fasta \
+reference_index=Index_Output_Filename \
+bowtie2-build ${reference} ${reference_index}
 
-# bowtie2-build in /reference/
-
-nohup /share/apps/bowtie2-2.1.0/bowtie2-build \
-Reference_Genome.fasta \
-Reference_Genome.fasta \
-> bowtie2-build.stdout 2> bowtie2-build.stderr &
-
-ln -s Reference_Genome.fasta Reference_Genome.fasta.fa
-
-# Run in tophat directory
-# Tophat PE reads with typical parameters
-
-nohup /share/apps/tophat-2.0.9.Linux_x86_64/tophat -p20 -o . \
---mate-inner-dist -9 --mate-std-dev 51  \
---rg-id "your ID" --rg-library "your library" \
---rg-platform ILLUMINA --rg-sample sample1 \
--G ../reference/Reference.gff \
-../reference/Reference_Genome.fasta \
-../sickle/Filename_R1_qt.fastq.gz \
-../sickle/Filename_R2_qt.fastq.gz \
-> tophat.stdout 2> tophat.stderr &
 ```
+TopHat aligns reads up to 1024 bp long to a genome in order to identify splice junctions using the read-mapping program Bowtie. TopHat first splits all reads into shorter segments to be mapped independently in order to locate short exons in the mapping. The program then performs an initial mapping where it maps reads to the genome and builds a database of possible splice junctions based off of evidence from the initial mapping. The splice junction database is created by looking for places in the mapping where two segments from the same read are mapped at a certain distance on the same genomic sequence or when an internal segment fails to map. This suggests that such reads are spanning multiple exons. The database is also created by looking for areas of piled up reads in the initial mapping known as coverage islands. Neighboring coverage islands are often spliced together in the transcriptome, so the program looks for ways to join these islands with an intron. TopHat then maps the reads a second time against these splice junctions to confirm their locations.  
 
 TopHat outputs several files, but there are three in particular that are important to review.
 
@@ -40,6 +22,8 @@ TopHat outputs several files, but there are three in particular that are importa
 
 Note: TopHat is able to aligned paired-end reads and single-end reads at the same time, but it is recommended that the different reads are run separately to ensure better results.
 
+For more information on Bowtie2 and TopHat, see these resources provided by [Michigan State University][6] and the [University of Texas at Austin][7].
+
 The next step in the workflow is to [process the alignments and create a table of raw counts][5].
 
 [1]: http://ccb.jhu.edu/software/tophat/manual.shtml
@@ -47,3 +31,5 @@ The next step in the workflow is to [process the alignments and create a table o
 [3]: https://github.com/samtools/samtools
 [4]: https://genome.ucsc.edu/FAQ/FAQformat.html#format1
 [5]: https://github.com/lkomoro/RNA-Seq-Workflow/blob/master/processing_alignments.Rmd
+[6]: http://ged.msu.edu/angus/tutorials-2013/rnaseq_tophat.html
+[7]: https://wikis.utexas.edu/display/bioiteam/Mapping+with+bowtie2+Tutorial

@@ -15,7 +15,7 @@ This workflow will guide users through steps and some common software tools used
 Follow the links above for instructions and code for each step of the workflow.  
 
 **The workflow above use reference alignments, but good resources for de novo assembly and alignment include:*
-- Salmon
+- [Salmon][12]
 - [MakeMyTranscriptome][10] (Tessa Pierce, SIO)
 
 [1]: https://github.com/lkomoro/RNA-Seq-Workflow/blob/master/scythe.Rmd
@@ -29,3 +29,4 @@ Follow the links above for instructions and code for each step of the workflow.
 [9]:https://github.com/lkomoro/RNA-Seq-Workflow/blob/master/Annotation.Rmd
 [10]:https://github.com/bluegenes/MakeMyTranscriptome
 [11]:https://github.com/lkomoro/RNA-Seq-Workflow/blob/master/Initial_dataqualityassess.Rmd
+[12]:https://github.com/SIO-BUG/BUG-Resources/blob/master/tutorials/salmon.rst
