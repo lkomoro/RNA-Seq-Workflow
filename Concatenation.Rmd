@@ -4,7 +4,7 @@ author: "Lisa Komoroske"
 date: "August 11, 2016"
 output: html_document
 ---
-# Sample Concatenation 
+# File Concatenation per Sample
 
 Below is a nested for loop R script for automated file concatenation by sample  
 This would be useful when you have a significant number of samples (so you don't want to have to use *cat* in the command line to do one by one) that are pooled and sequenced across several/many lanes.  
