@@ -6,7 +6,7 @@ Sickle can run with either paired-end reads or single-end reads. The following c
 - ```sickle pe``` for paired-end reads
 - ```sickle se``` for single-end reads
 
-For ```sickle pe``` the program must be told how to find the forward (```-f```) and reverse (``-r```) of the pairs.
+For ```sickle pe``` the program must be told how to find the forward (```-f```) and reverse (```-r```) of the pairs.
 
 ```
 #!/bin/bash
