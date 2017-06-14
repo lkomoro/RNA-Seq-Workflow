@@ -4,11 +4,13 @@ author: "Lisa Komoroske"
 date: "August 11, 2016"
 output: html_document
 ---
-###Sample Concatenation  
+**Sample Concatenation**  
 Below is a nested for loop R script for automated file concatenation by sample  
-This would be useful when you have a significant number of samples (so you don't want to have to use *cat* in the command line to do one by one) that are pooled and sequenced across several/many lanes. The data we get from our genome center is demultiplexed, so we have two files (forward and reverse= R1s and R2s, respectively) for sample for each lane (i.e., so if I sequence across 3 lanes, I have 3 R1 files and 3 R2 files for each sample).
+This would be useful when you have a significant number of samples (so you don't want to have to use *cat* in the command line to do one by one) that are pooled and sequenced across several/many lanes.  
 
-The 'nested' part here deals with multiple sequence runs (i.e., we ran three lanes first to check our DoC, then calculated we needed to run an additional 6 lanes of our library that had 96 samples pooled). But, this may also be useful if you get your samples back in one folder for each lane that you multiplexed your samples across. Of course, if you have a simpler scenario (all in one run/folder), you can just amend to use the for loop without the nested part. 
+The data we get from our genome center is demultiplexed, so we have two files (forward and reverse= R1s and R2s, respectively) for sample for each lane (i.e., so if I sequence across 3 lanes, I have 3 R1 files and 3 R2 files for each sample).
+
+The 'nested' part here deals with multiple sequence runs (i.e., we ran three lanes first to check our DoC, then calculated we needed to run an additional 6 lanes of our library that had 96 samples pooled). But, this may also be useful if you get your samples back in one folder for each lane that you multiplexed your samples across. Of course, if you have a simpler scenario (all in one run/folder), you can just amend to use the for loop without the nested part.  
 
 **update: May 2017: I added option #2 (below) that is better suited to work with naming files according to a unique sample ID that is in the file name, rather than the folder (directory). 
 
