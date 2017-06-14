@@ -60,7 +60,7 @@ The number in the second column is the samflag. Next, go to [this website][1] an
 
 #### At this point, it is optional but encouraged to run ```samtools flagstat``` to get a summary of aligned reads
 
-To obtain the aligned read summary, run the following script:
+To obtain the aligned read summary, **run the following script:**
 
 ```
 for file in /Directory_with_all_of_your_bam_files/*.bam
@@ -80,7 +80,9 @@ done
 
 ### Combine the raw counts tables and convert to a matrix
 
-The single-end and paired-end count tables for each sample must first be combined into a new file. Run the following R script to do this:
+The single-end and paired-end count tables for each sample must first be combined into a new file. 
+
+**Run the following R script:**
 
 ```
 # combining tables
@@ -160,7 +162,8 @@ write.table(base1,file="filename",sep="\t",quote=FALSE)
 ```
 
 ### Roll up the counts from transcripts to genes
-*insert explanation here*
+*insert explanation of why/what this is doing here*
+
 **Run the following R script:**
 
 ```
