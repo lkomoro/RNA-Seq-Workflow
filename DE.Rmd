@@ -8,7 +8,10 @@ output: html_document
 
 ##Differential Expression Analysis of RNA-Seq Data 
 
-Currently, there are several packages for DE expression in R (EdgeR, Limma, and DESeq2; also Cufflinks for data aligned with Tophat/Bowtie), each have their pros and cons/fans and haters. Like many things in science, I often end up trying things a bunch of different ways to understand what parameters are affecting the outcomes, and in the end, to convince myself that the patterns we are seeing are robust and 'true' to the data. Here I include code I've used for EdgeR and Limma packages for DE Analysis. Additionally, Meeta Mistry has some great DE resources/examples on github [here] [3]
+Currently, there are several packages for DE expression in R (EdgeR, Limma, and DESeq2; also Cufflinks for data aligned with Tophat/Bowtie), each have their pros and cons/fans and haters. Like many things in science, I often end up trying things a bunch of different ways to understand what parameters are affecting the outcomes, and in the end, to convince myself that the patterns we are seeing are robust and 'true' to the data. Here I include code I've used for EdgeR and Limma packages for DE Analysis. Additionally, for further explanation of how the different models work, check out the use guides for the packages (links below), and Meeta Mistry has some great DE resources/examples on github [here] [3]
+
+There are two required input files for DE analysis. First is the counts matrix with each row corresponding to a gene and each column corresponding to a sample (generated at the last step in the workflow). Secondly, you need a file with the metadata (information about your samples) that you want to use to inform the analysis (i.e., treatment assignments). The column headers in your count matrix MUST MATCH the row names of your metadata. The names must be identical and the order in
+which they appear (this is the most commonly encountered error)
 
 ###Option 1. DE with EdgeR
 Additional information can be found in the EdgeR User Guide or [BioConductor Website][1]
@@ -22,7 +25,8 @@ rm(list=ls())
 setwd("~/Desktop/DDIG_count_tables and related files")
 getwd()
 source("https://bioconductor.org/biocLite.R")
-biocLite("edgeR")
+biocLite("edgeR")#if needed
+biocLite("Biobase")#if needed
 library(edgeR)
 library(erer)
 ```
@@ -110,6 +114,7 @@ fit<-glmFit(y,design)#Given raw counts, dispersion(s) and a design matrix, glmFi
 colnames(fit)# just checking columns in same order are: HC.0 HC.60 T2.0 T2.60 T3.0 T3.60 T4.0 T4.60
 #fits the negative binomial GLM for each tag and produces an object of class DGEGLM with some new components.
 ```
+**Importantly, in the code above, as opposed to normal R syntax, in which if I redefine *y* it will write over what I previously defined it as, these functions use the previously calculated parameter to inform the next calculation and add it to our object 'y'**
 
 So to then test contrasts, can either specify by column #, or by naming them specifically.   
 *e.g., if we want to compare HC.0 vs T2.0, can specify either:*
@@ -260,7 +265,12 @@ write.table(merge, file = "compiled_contrasts.txt", sep = "\t", quote = F, row.n
 
 ###Option 2. DE with Limma Voom
 *working on adding in*
+```{r load}
+library('limma')
+library('Biobase')#double check if this is needed
 
+
+```
 ####Next step in the workflow is [Annotation][2]
 [1]:https://support.bioconductor.org/p/62173/
 [2]:https://github.com/lkomoro/RNA-Seq-Workflow/blob/master/Annotation.Rmd
