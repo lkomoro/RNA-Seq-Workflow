@@ -1,12 +1,12 @@
-##Processing alignments and creating a table of raw counts
+# Processing alignments and creating count table
 
 The alignment outputs must be processed and reformatted in order to be compatible with the differential expression analysis programs.
 
-###Convert .sam files to .bam files
+### Convert *.sam* files to *.bam* files
 
-The .sam files outputted by the alignment software must first be converted to .bam files. Do this separately for single-end and paired-end reads.
+The *.sam* files outputted by the alignment software must first be converted to *.bam* files. Do this separately for single-end and paired-end reads.
 
-Run the following script:
+**Run the following script:**
 
 ```
 for file in /Directory_with_all_of_your_sam_files/*.sam
@@ -24,9 +24,9 @@ done
 ```
 Note: If you only want to keep proper pairs, use the –f2 option in this script.
 
-###Index the .bam file and generate a raw counts table for each sample
+### Index the *.bam* file and generate a raw counts table for each sample
 
-Run the following script:
+**Run the following script:**
 
 ```
 for file in /Directory_with_all_of_your_bam_files/*.bam
@@ -48,7 +48,7 @@ The outputted table should look something like this:
 
 ![](https://github.com/lkomoro/RNA-Seq-Workflow/blob/master/index_table.jpg)
 
-####If there are unmapped reads, it may be helpful to investigate the samflags. Use the following code:
+#### If there are unmapped reads, it may be helpful to investigate the samflags. Use the following code:
 
 ```
 samtools view “bamfilename”|grep “gene/transcriptID”|less
