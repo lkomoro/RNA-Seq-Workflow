@@ -8,7 +8,7 @@ This workflow will guide users through steps and some common software tools used
 - Evaluation of data quality with [FastQC][3] 
 - Adapter trimming with [scythe][1] and low-quality trimming with [sickle][2]
 - Alignment to a reference [genome][6], [transcriptome][4], or de novo assembly*
-- [Processing alignments and creating a table of raw counts] [5]
+- [Processing alignments and creating a table of raw counts][5]  
 - [Differential expression analysis][8]
 - [Annotation][9]
 
