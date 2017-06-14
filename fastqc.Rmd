@@ -1,4 +1,4 @@
-## FastQC
+# FastQC
 
 FastQC runs several functions that will assess the quality of the inputted raw high throughput sequence data. FastQC can be downloaded [here][1].
 

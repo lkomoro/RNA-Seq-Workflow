@@ -4,7 +4,7 @@ author: "Lisa Komoroske"
 date: "August 11, 2016"
 output: html_document
 ---
-
+# Initial data quality assessments  
 *work in progress to be filled in last since this often done already by sequencing centers*  
 
 -looking at report typically sent from sequencing center for coverage, evenness, etc.  
