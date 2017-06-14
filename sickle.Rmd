@@ -1,8 +1,8 @@
 ## Low quality trimming with sickle
 
-Sickle is a sliding window adaptive trimming tool. It uses sequence quality and length thresholds to trim both the 5’ and 3’ ends of sequence reads. Because read qualitites can deterioriate at both the 5' an 3' ends, adpative trimming is necessary in order to prevent misalignment in the next step. Sickle can be downloaded [here][1].
+Sickle is a sliding window adaptive trimming tool. It uses sequence quality and length thresholds to trim both the 5’ and 3’ ends of sequence reads. Because read qualities can deterioriate at both the 5' and 3' ends, adaptive trimming helps to prevent misalignment in the next step. Sickle can be downloaded [here][1].
 
-Sickle can run with either paired-end reads or single-end reads. The following cammands are used to indicate if the data has paired-end reads or single-end reads:
+Sickle can run with either paired-end reads or single-end reads. The following commands are used to indicate if the data has paired-end reads or single-end reads:
 - ```sickle pe``` for paired-end reads
 - ```sickle se``` for single-end reads
 
