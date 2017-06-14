@@ -50,7 +50,8 @@ bwa mem -M -t 16 bwa_ref.fasta "$sample"_R1_qt.fastq "$sample"_R2_qt.fastq \
 
 done
 ```
-The next step in the workflow is [Processing alignments and creating a table of raw counts] [3]
+The next step in the workflow is [Processing alignments and creating a table of raw counts] [3]  
+
 [1]:https://github.com/lh3/bwa  
 [2]:https://github.com/samtools/samtools  
 [3]:https://github.com/lkomoro/RNA-Seq-Workflow/blob/master/processing_alignments.Rmd  
