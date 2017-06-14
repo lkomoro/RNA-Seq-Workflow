@@ -58,7 +58,7 @@ The number in the second column is the samflag. Next, go to [this website][1] an
 
 [1]: https://broadinstitute.github.io/picard/explain-flags.html
 
-#### At this point, it is optional but encouraged to run samtools flagstats to get a summary of aligned reads
+#### At this point, it is optional but encouraged to run ```samtools flagstat``` to get a summary of aligned reads
 
 To obtain the aligned read summary, run the following script:
 
@@ -78,7 +78,7 @@ echo $sample
 done
 ```
 
-###Combine the raw counts tables and convert to a matrix
+### Combine the raw counts tables and convert to a matrix
 
 The single-end and paired-end count tables for each sample must first be combined into a new file. Run the following R script to do this:
 
@@ -134,7 +134,9 @@ sum_stats<-cbind(Sample.name,PE_mapped, S_mapped, Total_mapped, Proportion_S_map
 write.table(sum_stats,file="mapping_sum_stats.txt",append=TRUE,sep="\t",col.names = FALSE,quote=FALSE)#hacky way to just get a table summarizing all the coverage of PE and S across samples}
 ```
 
-The combined counts table must then be converted into a matrix. Run the following R script:
+The combined counts table must then be converted into a matrix. 
+
+**Run the following R script:**
 
 ```
 rm(list=ls())
@@ -156,9 +158,10 @@ base1<-merge(base1,sample,by="GeneID_TranscriptID")
 
 write.table(base1,file="filename",sep="\t",quote=FALSE)
 ```
-###Roll up  the counts from transcripts to genes
 
-Run the following R script
+### Roll up the counts from transcripts to genes
+*insert explanation here*
+**Run the following R script:**
 
 ```
 rm(list=ls())#just in case, start fresh
@@ -181,5 +184,6 @@ filename_RNASeq_by_genes<-aggregate(cbind(“list of Gene IDs”) ~ GeneID, X_co
 write.table(filename_RNASeq_by_genes,file="filename_RNASeq_rolledupto_genes.txt",sep="\t",quote=FALSE)
 ```
 
-The next step in the workflow is to perform [differential expression analysis] [1].
+The next step in the workflow is to perform [differential expression analysis] [1].  
+
 [1]:https://github.com/lkomoro/RNA-Seq-Workflow/blob/master/DE.Rmd
