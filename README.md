@@ -2,7 +2,7 @@
 
 This workflow will guide users through steps and some common software tools used for RNA Sequencing analysis (though there are many others that also can work well), using mostly simple bash and R scripts. Note, this workflow is geared toward analsis of PE reads aligned to a reference, but can be amended for other data types, etc.
 
-####The main steps of this workflow are:  
+**The main steps of this workflow are:**  
 
 - [Initial quality assesments][11] and [file concatenation][7]
 - Evaluation of data quality with [FastQC][3] 
