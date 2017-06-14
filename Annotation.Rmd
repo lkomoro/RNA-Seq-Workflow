@@ -4,7 +4,8 @@ author: "Lisa Komoroske"
 date: "August 11, 2016"
 output: html_document
 ---
-##Annotation of Differential Expression Analysis Results
+# Annotation of Differential Expression Analysis Results
+
 This "final" step in the workflow pulls in the annotation for the genes identified as being differentially expressed. You may want to pull this in sooner, for example if you are interested in exploring all the genes/groups of genes that showed up in your samples. And, of course, there are additional downstream analyses looking at biological pathways, over/under-represented functions with GO terms, etc. You know, thinking about the actual biology of what this whole process is developed for. 
 
 While of course it is absolutely critical to get the upstreams steps right (crap data in, crap results out!), with NGS analysis sometimes we spend so much time there and then when we get the part where we interpret the biology, we are exhausted and rush through with the bare minimum. So, I'll just get on my soapbox for one minute to say, we, as a community, need to STOP doing this...this is the really fun, cool part that arguably does the most to advance the knowledge in our field!!
@@ -13,7 +14,7 @@ So, this 'last' step that I have detailed here should really be the first step i
 
 This code is reliant on having annotation saved in another file where there is some common identifier with your DE output (like the geneID). In this example, we have an annotation file from our previous de novo of the transcriptome assembly that we used for alignment. But whatever you aligned to (e.g., publicly available genome or transcriptome), something analagous should exist in those resources.
 
-####1. Results from EdgeR output
+#### 1. Results from EdgeR output
 
 ```{r EdgeR annotation}
 annot.DS<-read.csv('./delta_smelt_annotation_files/delta_by_gene_nr_annot_GO.csv', header = FALSE)

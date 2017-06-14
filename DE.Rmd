@@ -266,7 +266,7 @@ write.table(merge, file = "compiled_contrasts.txt", sep = "\t", quote = F, row.n
 ```
 
 ### Option 2. DE with Limma Voom
-*working on adding in*
+*working on adding in...not complete*
 ```{r load}
 library('limma')
 library('Biobase')#double check if this is needed
