@@ -1,6 +1,6 @@
 # Alignment to a reference transcriptome with BWA
 
-The program BWA uses three main algorithms to perform alignments. SAMtools is a program used for processing the alignments. Download [BWA][1] and [SAMtools][2] before amending/running the following script:
+The program BWA uses three main algorithms to perform alignments. SAMtools is a program used for processing the alignments. Download [BWA][1]  and [SAMtools][2]  before amending/running the following script:
 
 ```
 #!/bin/bash
