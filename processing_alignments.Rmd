@@ -187,6 +187,6 @@ filename_RNASeq_by_genes<-aggregate(cbind(“list of Gene IDs”) ~ GeneID, X_co
 write.table(filename_RNASeq_by_genes,file="filename_RNASeq_rolledupto_genes.txt",sep="\t",quote=FALSE)
 ```
 
-The next step in the workflow is to perform [differential expression analysis] [1].  
+The next step in the workflow is to perform [differential expression analysis][1].  
 
 [1]:https://github.com/lkomoro/RNA-Seq-Workflow/blob/master/DE.Rmd
