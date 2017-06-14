@@ -1,4 +1,4 @@
-#Adapter trimming with scythe
+## Adapter trimming with scythe
 
 Adapters bind both the 5’ and 3’ ends of genomic DNA fragments in the sequencing library, so because they are not part of the genome any adapter contamination must be removed prior to the alignment steps. If the RNA-seq method used resulted in very short fragments, the 3’ end of the sequence can be read through to the 3’ adapter. This read through can happen at a variable position, which would prevent the sequence from aligning properly because the adapter would not correspond to the bases at the 3’ end of the reference sequence. The program scythe will trim the adapters off of the 3’ end. Scythe can be downloaded [here][1].
 
