@@ -56,8 +56,6 @@ samtools view “bamfilename”|grep “gene/transcriptID”|less
 ```
 The number in the second column is the samflag. Next, go to [this website][1] and type in the samflag so that the website can tell you what it means.
 
-[1]: https://broadinstitute.github.io/picard/explain-flags.html
-
 #### At this point, it is optional but encouraged to run ```samtools flagstat``` to get a summary of aligned reads
 
 To obtain the aligned read summary, **run the following script:**
@@ -187,6 +185,7 @@ filename_RNASeq_by_genes<-aggregate(cbind(“list of Gene IDs”) ~ GeneID, X_co
 write.table(filename_RNASeq_by_genes,file="filename_RNASeq_rolledupto_genes.txt",sep="\t",quote=FALSE)
 ```
 
-The next step in the workflow is to perform [differential expression analysis][1].  
+The next step in the workflow is to perform [differential expression analysis][2].  
 
-[1]:https://github.com/lkomoro/RNA-Seq-Workflow/blob/master/DE.Rmd
+[1]: https://broadinstitute.github.io/picard/explain-flags.html  
+[2]:https://github.com/lkomoro/RNA-Seq-Workflow/blob/master/DE.Rmd
